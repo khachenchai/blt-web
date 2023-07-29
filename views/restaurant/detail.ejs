@@ -1,0 +1,88 @@
+<%- include('../../include/header') %>
+    <%- include('../../include/navbar') %>
+
+    <div class="px-16 py-8 mx-auto">
+        <div class="lg:flex">
+            <div class="lg:w-1/2">
+                <img src="/img/bunlaithong.png" class="object-contain lg:h-96 w-full" alt="">
+            </div>
+            <div class="lg:w-1/2 p-4">
+                <h1 class="lg:text-5xl font-bold lg:font-normal text-xl text-center lg:text-left my-3"><%= restaurantData.name %></h1>
+                <p><b>เบอร์โทรศัพท์ :</b> <%= restaurantData.phoneNumber %></p>
+                <% if (restaurantData.ggMapsLink) { %>
+                    <p><b>Google Maps :</b> <a href="<%= restaurantData.ggMapsLink %>" class="text-sky-500 hover:underline">ไปที่ Google Maps</a></p>
+                <% } %>
+                <p><b>ตำแหน่งร้านอาหาร :</b> <%= restaurantData.address %></p>
+                <hr class="my-3">
+                <p class="lg:indent-4 text-center lg:text-left"><%= restaurantData.detail === '' ? 'ไม่มีรายละเอียด' : restaurantData.detail %></p>
+                <hr class="my-3">
+                <div class="flex justify-center mt-3">
+                    <div class="p-4 ">
+                        <a href="/restaurant/<%= restaurantData._id %>/orderInform"
+                            class="p-3 border hover:bg-red-500 rounded-lg border-red-500 lg:text-3xl text-base font-semibold text-red-500 hover:text-white transition-all duration-200">จองที่นั่งเลย
+                            !</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="my-2">
+        <h1 class="lg:text-4xl text-3xl mt-5 text-center">ร้านอาหารที่น่าสนใจ</h1>
+        <div class="grid mt-6 mb-6 mx-8 space-y-4 lg:grid-cols-6">
+            <a href=""
+                class="max-w-[180px] bg-white border shop border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="object-cover relative">
+                    <img class="object-cover h-40 w-96" src="/img/pst.png" alt="" />
+                    <!-- <div class="absolute bottom-0 right-0 rounded-l-md px-2 bg-blue-500 opacity-95">
+                        <b class="text-white">
+                            <div class="flex flex-row items-baseline">
+                                <div class="flex-shrink pr-2"><i class="fa fa-solid fa-eye fa-fw fa-inverse"
+                                        style="color: white;"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-normal text-base">183</h3>
+                                </div>
+                            </div>
+                        </b>
+                    </div> -->
+                </div>
+                <div class="px-4 py-2">
+                    <p class="mb-1 text-lg font-normal text-black">Cafe PKW</p>
+                    <p class=" text-lg font-normal text-black">ดูรายละเอียด</p>
+                </div>
+            </a>
+
+        </div>
+        <hr class="my-2">
+        <h1 class="lg:text-4xl text-3xl mt-5 text-center">ร้านอาหารยอดนิยม</h1>
+        <div class="grid mt-6 mx-8 space-y-4 lg:grid-cols-6">
+            <a href=""
+                class="max-w-[180px] bg-white border shop border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="object-cover relative">
+                    <img class="object-cover h-40 w-96" src="/img/pst.png" alt="" />
+                    <!-- <div class="absolute bottom-0 right-0 rounded-l-md px-2 bg-blue-500 opacity-95">
+                        <b class="text-white">
+                            <div class="flex flex-row items-baseline">
+                                <div class="flex-shrink pr-2"><i class="fa fa-solid fa-eye fa-fw fa-inverse"
+                                        style="color: white;"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-normal text-base">183</h3>
+                                </div>
+                            </div>
+                        </b>
+                    </div> -->
+                </div>
+                <div class="px-4 py-2">
+                    <p class="mb-1 text-lg font-normal text-black">Cafe PKW</p>
+                    <p class=" text-lg font-normal text-black">ดูรายละเอียด</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+        <%- include('../../include/footer') %>
+
+<style>
+
+
+</style>

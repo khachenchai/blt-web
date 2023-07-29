@@ -1,0 +1,132 @@
+<%- include('../../include/header') %>
+    <%- include('../../include/navbar') %>
+
+        <div class="px-16 py-8">
+            <a href="/profile" class="text-sky-500 hover:underline"><-- กลับ</a>
+            <h1 class="text-xl font-bold lg:font-normal lg:text-5xl my-4">ข้อมูลร้านอาหาร</h1>
+            <div class="lg:flex  lg:justify-between lg:items-baseline">
+                <div>
+                    <div class="lg:p-4 ">
+                        <p class="lg:pt-4"><b>ชื่อร้าน :</b> <%= restaurantData.name %></p>
+                        <p><b>เบอร์โทรศัพท์ :</b> <%= restaurantData.phoneNumber %></p>
+                        <hr class="my-3">
+                        <p><b>ที่นั่งท้งหมด :</b> <%= restaurantData.allSeats %> ที่นั่ง</p>
+                        <p><b>จองไปแล้ว :</b> <%= restaurantData.onHands %> ที่นั่ง</p>
+                        <p><b>เหลือที่นั่ง :</b> <%= restaurantData.allSeats - restaurantData.onHands %> ที่นั่ง</p>
+                        <hr class="my-3">
+                    </div>
+                </div>
+                <div>
+                    <div class=" p-4">
+                        <a href="/restaurant/<%= restaurantData._id %>/edit">
+                            <div
+                                class="relative shadow-lg inline-flex items-center justify-center mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-orange-500 to-orange-700">
+                                <span
+                                    class="relative p-2 transition-all text-white ease-in duration-75 bg-opacity-100 text-base font-semibold rounded-md group-hover:bg-opacity-0">
+                                    แก้ไขข้อมูลร้าน
+                                </span>
+                            </div>
+                        </a>
+                        <a href="/restaurant/delete">
+                            <button
+                                class="relative shadow-lg inline-flex items-center justify-center mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-500 to-red-600">
+                                <span
+                                    class="relative p-2 transition-all text-white ease-in duration-75 bg-opacity-100 text-base font-semibold dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    ลบ
+                                </span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-2">
+            <h1 class="lg:text-4xl text-3xl pt-5 text-center">ออเดอร์จากลูกค้า</h1>
+            <!-- <hr class="my-3"> -->
+        </div>
+        <div class="p-4 h-screen lg:mx-32">
+            <div class="flex-col space-y-4 mx-auto contanier">
+                <% if (restaurantData.orders.length > 0) { %>
+                    <% restaurantData.orders.reverse().forEach(order => { %>
+                        <div
+                            class="lg:flex lg:justify-between gap-4 items-center bg-slate-100 relative rounded-lg p-4 shadow-xl">
+                            <a href="/api/restaurant/clear?shopId=<%= restaurantData._id %>&orderId=<%= order._id %>" id="clearOrder" onclick="confirmDeletion(event, 'ข้อมูลออเดอร์นี้จะไม่สามารถกู้คืนได้ในภายหลัง')">
+                                <button
+                                class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-red-500 hover:bg-red-700 transition duration-200 text-white">X</button>
+                            </a>
+                            <div class="w-full p-2 flex items-center gap-8">
+                                <div>
+                                    <h1 class="lg:text-2xl text-base font-semibold">
+                                        <%= order.booker.prefix %><%= order.booker.firstname %> <%= order.booker.lastname %>
+                                    </h1>
+                                    <h1 class="lg:text-base text-sm text-black">
+                                        <% 
+                                            const time = new Date(order.orderDateTime).getTime();
+                                            const formattedDate = new Date(time).toLocaleString();
+
+                                            let myList = formattedDate.split(' ')
+
+                                            let finalFormattedDate = `${myList[0]} เวลา ${myList[1].substr(0, 5)} น.`;
+                                        %>
+                                        วันที่ <%= finalFormattedDate %>
+                                    </h1>
+                                    <h1 class="lg:text-base text-sm text-slate-500 indent-4 text-clip">
+                                        <%= order.detail %>
+                                    </h1>
+    
+                                </div>
+                            </div>
+                            <div class="mr-2 mt-3 lg:mt-0 gap-4 w-full flex text-center justify-end">
+                                <div class="p-4">
+                                    <h1 class="text-4xl font-semibold">
+                                        <%= order.seatsAmount %>
+                                    </h1>
+                                    <h1 class="text-xl mt-2 font-semibold">
+                                        ที่นั่ง
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <h1 class="lg:text-xl text-lg pt-5 text-slate-500 text-center">ยังไม่มีออเดอร์การจองจากลูกค้า</h1>
+                <% } %>
+
+            </div>
+
+        </div>
+        <%- include('../../include/footer') %>
+
+        <script>
+            function confirmDeletion(event, text) {
+                event.preventDefault(); // Prevent the default behavior of the anchor tag
+
+                const deleteUrl = event.currentTarget.getAttribute('href');
+
+                Swal.fire({
+                    title: 'แน่ใจนะ?',
+                    text: text,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'ยืนยัน',
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(deleteUrl, {
+                            method: 'PUT',
+                        })
+                            .then((res) => {
+                                if (!res.ok) {
+                                    throw new Error('Failed to delete')
+                                }
+                                
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                        window.location.reload();
+                    }
+                });
+            }
+
+        </script>

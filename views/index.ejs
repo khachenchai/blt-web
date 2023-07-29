@@ -1,0 +1,76 @@
+<%- include('../include/header') %>
+    <%- include('../include/navbar') %>
+
+    <div class="p-8 mx-auto">
+        <h1 class="text-4xl">ร้านอาหารทั้งหมด (ล่าสุด)</h1>
+        <div class="grid mt-5 mx-8 lg:grid-cols-6 space-y-4 lg:space-y-2">
+            <% restaurants.reverse().forEach(restaurant => { %>
+                <div
+                    class="max-w-[180px] overflow-hidden bg-white border shop border-gray-200 rounded-md shadow">
+                    <div class="object-cover relative">
+                        <img class="object-cover h-40 w-96" src="/img/pst.png" alt="" />
+                    </div>
+                    <div class="px-4 py-2">
+                        <p class="mb-1 text-lg font-bold text-black"><%= restaurant.name %></p>
+                        <p class="font-normal text-sm text-slate-500">เหลือที่นั่งว่างอยู่ : <%= restaurant.allSeats - restaurant.onHands %>/<%= restaurant.allSeats %> ที่นั่ง</p>
+                        <% if (userData) { %>
+                            <a <% if (userData.ownRestaurants.includes(restaurant._id)) { %>
+                                href="/restaurant/<%= restaurant._id %>/manage"
+                            <% } else { %>
+                                href="/restaurant/<%= restaurant._id %>/detail"
+                            <% } %>
+                                class="wow text-lg font-normal <%= userData.ownRestaurants.includes(restaurant._id) ? 'text-red-600' : 'text-yellow-700' %>"><%= userData.ownRestaurants.includes(restaurant._id) ? 'จัดการร้าน' : 'ดูรายละเอียด' %></a>
+                        <% } else { %>
+                            <a href="/restaurant/<%= restaurant._id %>/detail" class="wow text-lg font-normal text-yellow-700">ดูรายละเอียด</a>
+                        <% } %>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <h1 class="text-4xl mt-5">ร้านอาหารที่คุณถูกใจ</h1>
+        <div class="grid mt-5 mx-8 lg:grid-cols-6 space-y-4 lg:space-y-0">
+            <a href=""
+                class="max-w-[180px] bg-white border shop border-gray-200 rounded-md shadow">
+                <div class="object-cover relative">
+                    <img class="object-cover h-40 w-96" src="/img/pst.png" alt="" />
+                </div>
+                <div class="px-4 py-2">
+                    <p class="mb-1 text-lg font-normal text-black">Cafe PKW</p>
+                    <p class=" text-lg font-normal text-black">ดูรายละเอียด</p>
+                </div>
+            </a>
+            <a href=""
+                class="max-w-[180px] bg-white border shop border-gray-200 rounded-md shadow">
+                <div class="object-cover relative">
+                    <img class="object-cover h-40 w-96" src="/img/pst.png" alt="" />
+                    <div class="absolute bottom-0 right-0 rounded-l-md px-2 bg-blue-500 opacity-95">
+                        <b class="text-white">
+                            <div class="flex flex-row items-baseline">
+                                <div class="flex-shrink pr-2"><i class="fa fa-solid fa-eye fa-fw fa-inverse"
+                                        style="color: white;"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-normal text-base">183</h3>
+                                </div>
+                            </div>
+                        </b>
+                    </div>
+                </div>
+                <div class="px-4 py-2">
+                    <p class="mb-1 text-lg font-normal text-black">Cafe PKW</p>
+                    <p class=" text-lg font-normal text-black">ดูรายละเอียด</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+        <%- include('../include/footer') %>
+
+<style>
+
+.wow:hover {
+    color: rgb(52, 123, 255);
+    transition: all 0.1s linear;
+}
+
+</style>

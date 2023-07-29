@@ -1,0 +1,68 @@
+<%- include('../../include/header') %>
+    <%- include('../../include/navbar') %>
+
+    <div class="h-[80vh]">
+        <div class="container p-4 mx-auto mt-16 md:mt-10">
+            <!-- component -->
+            <section class="max-w-4xl p-8 mt-2 mx-auto bg-slate-50 rounded-md shadow-lg  ">
+                <h1 class="text-xl font-bold pb-2 leading-tight underline tracking-tight text-gray-900 md:text-2xl">
+                    กรอกข้อมูลการจอง</h1>
+                <form action="/api/order/addOrder?shopId=<%= restaurantData._id %>" method="POST">
+                    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                        <div>
+                            <label class="font-bold" for="seatsAmount">จำนวนที่นั่ง</label>
+                            <input type="number" name="seatsAmount" id="seatsAmount" placeholder="กรอกเฉพาะตัวเลข"
+                                class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        </div>
+
+                        <div>
+                            <label class="font-bold" for="orderDateTime">วันและเวลา</label>
+                            <input type="datetime-local" name="orderDateTime" id="orderDateTime" placeholder="" min="<%= new Date().toISOString().slice(0, -8) %>"
+                                class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="dark:text-gray-200 font-bold" for="detail">รายละเอียดเพิ่มเติม</label>
+                        <textarea id="detail" name="detail" rows="4" class="block p-2.5 mt-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="(ไม่บังคับกรอก)"></textarea>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button type="submit"
+                            class="w-full text-white shadow-md bg-yellow-500 transition duration-200 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-semibold rounded-lg text-md px-5 py-2.5 text-center text-lg">จองเลย !</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+    <%- include('../../include/footer') %>
+
+        <script>
+
+            const passwordToggle = document.getElementById('password-toggle')
+            const passwordtoggleBtn = document.getElementById('password-toggle-btn')
+            const password = document.getElementById('password')
+
+            const checkPasswordToggle = document.getElementById('check-password-toggle')
+            const checkPasswordtoggleBtn = document.getElementById('check-password-toggle-btn')
+            const checkPassword = document.getElementById('check-password')
+
+            passwordToggle.addEventListener('click', () => {
+                if (password.type === 'password') {
+                    password.type = 'text';
+                    passwordtoggleBtn.style.color = "rgb(161 98 7)"
+                } else {
+                    password.type = 'password';
+                    passwordtoggleBtn.style.color = "#aaa"
+                }
+            })
+            checkPasswordToggle.addEventListener('click', () => {
+                if (checkPassword.type === 'password') {
+                    checkPassword.type = 'text';
+                    checkPasswordtoggleBtn.style.color = "rgb(161 98 7)"
+                } else {
+                    checkPassword.type = 'password';
+                    checkPasswordtoggleBtn.style.color = "#aaa"
+                }
+            })
+
+        </script>

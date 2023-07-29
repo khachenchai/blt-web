@@ -1,0 +1,118 @@
+<%- include('../include/header') %>
+    <%- include('../include/navbar') %>
+
+        <div class="px-16 py-8">
+            <div class="justify-center flex w-full items-center">
+                <div>
+                    <div class="w-full p-4">
+                        <h1 class="text-xl font-bold lg:font-normal lg:text-5xl my-4">ข้อมูลส่วนตัว</h1>
+                        <p class="pt-4">ชื่อ-นามสกุล : <%= userData.prefix %>
+                                <%= userData.firstname %>
+                                    <%= userData.lastname %>
+                        </p>
+                        <hr class="my-3">
+                        <p>เบอร์โทรศัพท์ : <%= userData.phoneNumber %>
+                        </p>
+                        <hr class="my-3">
+                    </div>
+                </div>
+            </div>
+            <hr class="my-2">
+            <h1 class="lg:text-4xl text-3xl mt-5 text-center">ร้านอาหารของฉัน (<%= userData['ownRestaurants'].length %>)</h1>
+            <div class="grid lg:grid-cols-2 mt-6 mb-6 gap-4 mx-8">
+                <% userData['ownRestaurants'].forEach(restaurant=> { %>
+                    <div>
+                        <div class="max-w-md mx-auto rounded-lg bg-white shadow-lg overflow-hidden md:max-w-2xl">
+                            <div class="md:flex">
+                                <div class="md:shrink-0">
+                                    <img class="object-cover h-full w-72" src="/img/pst.png"
+                                        alt="Modern building architecture">
+                                </div>
+                                <div class="lg:px-8 lg:py-0 p-8">
+                                    <% if (restaurant.name.length <= 8) { %>
+                                        <h5 class="my-2 text-2xl font-semibold tracking-tight text-black dark:text-white">
+                                            <%= restaurant.name %></h5>
+                                    <% } else { %>
+                                        <h5 class="my-2 text-xl font-semibold tracking-tight text-black dark:text-white">
+                                            <%= restaurant.name %></h5>
+                                    <% } %>
+                                    <hr class="mb-2">
+                                    <p class="font-normal text-black">มีที่นั่งที่ถูกจอง : <%= restaurant.onHands %>/<%= restaurant.allSeats %> ที่นั่ง</p>
+                                    <hr class="my-2">
+                                    <div class="flex gap-1">
+                                        <a href="/restaurant/<%= restaurant._id %>/manage">
+                                            <div
+                                                class="relative shadow-lg inline-flex items-center justify-center mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-orange-500 to-orange-700">
+                                                <span
+                                                    class="relative p-2 transition-all text-white ease-in duration-75 bg-opacity-100 text-base font-semibold rounded-md group-hover:bg-opacity-0">
+                                                    จัดการ
+                                                </span>
+                                            </div>
+                                        </a>
+                                        <a href="/api/restaurant/delete?id=<%= restaurant._id %>" onclick="confirmDeletion(event)">
+                                            <div
+                                                class="relative shadow-lg inline-flex items-center justify-center mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-500 to-red-600">
+                                                <span
+                                                    class="relative p-2 transition-all text-white ease-in duration-75 bg-opacity-100 text-base font-semibold dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                                    ลบ
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                        <a href="/addRestaurant">
+                            <div
+                                class="max-w-md h-full mx-auto rounded-lg bg-white transition duration-500 hover:bg-slate-200 border-2 border-sky-600 shadow-lg overflow-hidden md:max-w-2xl">
+                                <div class="flex h-full justify-center items-center">
+                                    <h1 class="text-8xl text-sky-600">+</h1>
+                                </div>
+                            </div>
+                        </a>
+            </div>
+            <hr class="my-3">
+        </div>
+        <%- include('../include/footer') %>
+
+            <style>
+
+
+            </style>
+
+            <script>
+                function confirmDeletion(event) {
+                    event.preventDefault(); // Prevent the default behavior of the anchor tag
+
+                    const deleteUrl = event.currentTarget.getAttribute('href');
+
+                    Swal.fire({
+                        title: 'แน่ใจนะ?',
+                        text: 'ข้อมูลร้านอาหารนี้จะไม่สามารถกู้คืนได้ในภายหลัง',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'ยืนยัน',
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch(deleteUrl, {
+                                method: 'DELETE',
+                            })
+                                .then((res) => {
+                                    if (!res.ok) {
+                                        throw new Error('Failed to delete')
+                                    }
+                                    
+                                })
+                                .catch((err) => {
+                                    console.log(err)
+                                })
+                            window.location.reload();
+                        }
+                    });
+                }
+
+            </script>

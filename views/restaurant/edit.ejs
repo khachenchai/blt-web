@@ -1,0 +1,65 @@
+<%- include('../../include/header') %>
+    <%- include('../../include/navbar') %>
+
+    <div class="container p-4 mx-auto">
+        <!-- component -->
+        <section class="max-w-4xl p-8 mt-2 mx-auto bg-slate-100 rounded-md shadow-lg">
+            <h1
+                class="text-xl font-bold pb-2 leading-tight underline tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                แก้ไขข้อมูลร้าน</h1>
+            <form action="/api/restaurant/edit?id=<%= restaurantData._id %>" method="POST">
+                <div class="mt-4">
+                    <label class="font-bold" for="name">ชื่อ <span style="color: red;">*</span></label>
+                        <input type="text" name="name" id="name" placeholder="" value="<%= restaurantData.name %>"
+                            class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            >
+                </div>
+                <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                    
+                    <div>
+                        <label class="font-bold" for="phoneNumber">เบอร์โทรศัพท์ <span style="color: red;">*</span></label>
+                        <input type="text" name="phoneNumber" id="phoneNumber" placeholder="" value="<%= restaurantData.phoneNumber %>"
+                            class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            >
+                    </div>
+                    <div>
+                        <label class="font-bold" for="allSeats">จำนวนที่นั่ง <span style="color: red;">*</span></label>
+                        <input type="number" name="allSeats" id="allSeats" placeholder="กรอกเฉพาะตัวเลข" value="<%= restaurantData.allSeats %>"
+                            class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            >
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label class="font-bold" for="detail">รายละเอียด</label>
+                    <textarea id="detail" name="detail" rows="4" class="block p-2.5 mt-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="(ไม่บังคับกรอก)"><%= restaurantData.detail %></textarea>
+                </div>
+                <div class="mt-4">
+                    <label class="font-bold" for="address">ที่ตั้ง <span style="color: red;">*</span></label>
+                    <textarea id="address" name="address" rows="4" class="block p-2.5 mt-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"><%= restaurantData.address %></textarea>
+                </div>
+
+                <div class="mt-4">
+                    <label class="font-bold" for="ggMaps">ที่ตั้ง Google Maps (ถ้ามี)</label>
+                    <input type="text" name="ggMaps" id="ggMaps" placeholder="..." value="<%= restaurantData.ggMapsLink %>"
+                        class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                        >
+                </div>
+                
+                <div class="flex justify-end mt-6">
+                    <button type="submit"
+                        class="w-full text-white shadow-md bg-yellow-500 transition duration-200 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-semibold rounded-lg text-md px-5 py-2.5 text-center text-lg">แก้ไข</button>
+                </div>
+                
+            </form>
+        </section>
+    </div>
+        <%- include('../../include/footer') %>
+
+<style>
+
+.shop:hover p {
+    color: rgb(52, 123, 255);
+    transition: all 0.1s linear;
+}
+
+</style>
