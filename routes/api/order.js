@@ -15,7 +15,7 @@ router.post('/addOrder', (req, res) => {
     Order.create(dataInfo).then((order) => {
         Restaurant.findById(req.query.shopId).then((restaurant) => {
             restaurant['orders'].push(order._id);
-            restaurant['allSeats'] = restaurant['allSeats'] - (+req.body.seatsAmount)
+            // restaurant['allSeats'] = restaurant['allSeats'] - (+req.body.seatsAmount)
             restaurant['onHands'] = restaurant['onHands'] + (+req.body.seatsAmount)
             restaurant.save();
             console.log('updated restaurant' + restaurant);
@@ -36,6 +36,7 @@ router.post('/addOrder', (req, res) => {
     })
     
 });
+
 
 router.get('/', (req, res, next) => {
     Order.find().exec()

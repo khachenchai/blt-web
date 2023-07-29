@@ -59,14 +59,14 @@ router.put('/clear', async (req, res, next) => {
         const restaurant = await Restaurant.findById(req.query.shopId);
         const order = await Order.findById(req.query.orderId);
 
-        restaurant.allSeats += order.seatsAmount;
+        // restaurant.allSeats += order.seatsAmount;
         restaurant.onHands -= order.seatsAmount;
 
         restaurant.orders = restaurant.orders.filter(orderId => !orderId.equals(order._id));
 
         await restaurant.save();
         console.log(restaurant.orders);
-        res.send({ msg: 'okay' });
+        res.redirect(`/restaurant/${req.query.shopId}/manage`)
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: 'Internal Server Error' });

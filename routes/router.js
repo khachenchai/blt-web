@@ -35,9 +35,37 @@ router.get('/register', redirectIfAuth, (req, res) => {
 
 router.get('/profile', authMiddleware, async (req, res) => {
     let userData = await User.findById(req.session.userId).populate('ownRestaurants');
-    // in "userData", it has the document named "ownRestaurants" that types an array of object ids and I want to get the data from restaurants collection using these ids
+    let historyData = await User.findById(req.session.userId).populate({
+        path: 'orderHistory',
+        populate: {
+            path: 'restaurant',
+            model: 'Restaurant'
+        }
+    });
+
+    // console.log(historyData);
+    
     res.render('profile', {
-        userData
+        userData,
+        historyData
+    });
+})
+
+router.get('/myOrders', authMiddleware, async (req, res) => {
+    let userData = await User.findById(req.session.userId);
+    let historyData = await User.findById(req.session.userId).populate({
+        path: 'orderHistory',
+        populate: {
+            path: 'restaurant',
+            model: 'Restaurant'
+        }
+    });
+
+    // console.log(historyData);
+    
+    res.render('myOrders', {
+        userData,
+        historyData
     });
 })
 

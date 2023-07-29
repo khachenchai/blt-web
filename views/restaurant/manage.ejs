@@ -10,7 +10,7 @@
                         <p class="lg:pt-4"><b>ชื่อร้าน :</b> <%= restaurantData.name %></p>
                         <p><b>เบอร์โทรศัพท์ :</b> <%= restaurantData.phoneNumber %></p>
                         <hr class="my-3">
-                        <p><b>ที่นั่งท้งหมด :</b> <%= restaurantData.allSeats %> ที่นั่ง</p>
+                        <p><b>ที่นั่งทั้งหมด :</b> <%= restaurantData.allSeats %> ที่นั่ง</p>
                         <p><b>จองไปแล้ว :</b> <%= restaurantData.onHands %> ที่นั่ง</p>
                         <p><b>เหลือที่นั่ง :</b> <%= restaurantData.allSeats - restaurantData.onHands %> ที่นั่ง</p>
                         <hr class="my-3">
@@ -120,11 +120,13 @@
                                     throw new Error('Failed to delete')
                                 }
                                 
+                            }).then(() => {
+                                window.location.reload();
                             })
                             .catch((err) => {
                                 console.log(err)
                             })
-                        window.location.reload();
+                        
                     }
                 });
             }
