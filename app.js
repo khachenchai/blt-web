@@ -10,6 +10,7 @@ const restaurantApi = require('./routes/api/restaurant');
 const orderApi = require('./routes/api/order');
 const expressSession = require('express-session');
 const flash = require('connect-flash');
+const multer = require('multer');
 
 dotenv.config();
 

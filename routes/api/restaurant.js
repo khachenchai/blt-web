@@ -3,8 +3,29 @@ const router = express.Router();
 const Restaurant = require('../../models/restaurant');
 const User = require('../../models/user');
 const Order = require('../../models/order');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs').promises;
 
-router.post('/addRestaurant', (req, res) => {
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, __dirname + "../../../public/uploads/")
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueName + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+}).single('imageUrl')
+
+router.post('/addRestaurant', upload, (req, res) => {
+
+    // if (!req.file) {
+    //     return res.status(400).send('No file was uploaded.');
+    // }
     const dataInfo = {
         name: req.body.name,
         phoneNumber: req.body.phoneNumber,
@@ -13,8 +34,10 @@ router.post('/addRestaurant', (req, res) => {
         address: req.body.address,
         ggMapsLink: req.body.ggMaps,
         onHands: 0,
-        orders: []
+        orders: [],
+        imageUrl: req.file ? req.file.filename : ''
     }
+    // res.send(dataInfo);
     console.log(req.session.userId);
     Restaurant.create(dataInfo).then((restaurant) => {
         console.log('Adding success : ' + restaurant);
@@ -36,8 +59,31 @@ router.post('/addRestaurant', (req, res) => {
         })
 });
 
-router.post('/edit', (req, res) => {
-    Restaurant.findByIdAndUpdate(req.query.id, req.body).then((updatedData) => {
+router.post('/edit', upload, (req, res) => {
+    let newImage = "";
+
+    if (req.file) {
+        newImage = req.file.filename;
+        try {
+            fs.unlink(path.join(__dirname + "../../../public/uploads/") + req.body.oldImage);
+        } catch (err) {
+            console.log(err);
+        }
+    } else {
+        newImage = req.body.oldImage;
+    }
+    const dataInfo = {
+        name: req.body.name,
+        phoneNumber: req.body.phoneNumber,
+        allSeats: +req.body.allSeats,
+        detail: req.body.detail,
+        address: req.body.address,
+        ggMapsLink: req.body.ggMaps,
+        onHands: 0,
+        orders: [],
+        imageUrl: newImage
+    }
+    Restaurant.findByIdAndUpdate(req.query.id, dataInfo, {new: true}).then((updatedData) => {
         console.log('updated data : ', updatedData);
         res.redirect(`/restaurant/${req.query.id}/manage`)
     })

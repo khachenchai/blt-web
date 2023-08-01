@@ -7,7 +7,7 @@
             <h1
                 class="text-xl font-bold pb-2 leading-tight underline tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 ลงทะเบียนร้านอาหารของคุณ</h1>
-            <form action="/api/restaurant/addRestaurant" method="POST">
+            <form action="/api/restaurant/addRestaurant" method="POST" enctype="multipart/form-data">
                 <div class="mt-4">
                     <label class="font-bold" for="name">ชื่อ <span style="color: red;">*</span></label>
                         <input type="text" name="name" id="name" placeholder=""
@@ -45,8 +45,8 @@
                         >
                 </div>
                 <div class="mt-4">
-                    <label class="font-bold" for="logoImage">รูปโลโก้ร้าน (ถ้ามี)</label>
-                    <input type="file" accept="image/*" name="logoImage" id="logoImage" placeholder="..."
+                    <label class="font-bold" for="imageUrl">รูปโลโก้ร้าน (ถ้ามี)</label>
+                    <input type="file" accept="image/*" name="imageUrl" id="imageUrl" placeholder="..."
                         class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         >
                 </div>

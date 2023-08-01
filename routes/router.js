@@ -6,7 +6,7 @@ const Order = require('../models/order')
 const redirectIfAuth = require('../middleware/redirectIfAuth')
 const authMiddleware = require('../middleware/authMiddleware')
 
-router.get('/', async (req, res) => {
+router.get('/', authMiddleware , async (req, res) => {
     let userData = await User.findById(req.session.userId);
     const allRestaurants = await Restaurant.find();
 
@@ -81,9 +81,11 @@ router.get('/addRestaurant', authMiddleware, async (req, res) => {
 router.get('/restaurant/:id/detail', authMiddleware, async (req, res) => {
     let userData = await User.findById(req.session.userId);
     let restaurantData = await Restaurant.findById(req.params.id)
+    const allRestaurants = await Restaurant.find();
     res.render('restaurant/detail', {
         userData,
-        restaurantData
+        restaurantData,
+        restaurants: allRestaurants
     });
 })
 

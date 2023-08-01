@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../models/user');
 const bcrypt = require('bcrypt');
+const Restaurant = require('../../models/restaurant');
 
 router.post('/register', (req, res) => {
     User.create(req.body).then((user) => {
@@ -67,4 +68,35 @@ router.post('/login', async (req, res) => {
         res.redirect('/login');
     }
 });
+
+router.get('/update/fav', async (req, res) => {
+    const userId = req.session.userId;
+    const shopId = req.query.shopId;
+    const isFav = req.query.isFav === "true";
+
+    console.log(isFav);
+    
+    User.findById(userId).then((user) => {
+        if (isFav) {
+            user.favRestaurants = user.favRestaurants.filter(favId => !favId.equals(shopId));
+            user.save();
+        } else {
+            user['favRestaurants'].push(shopId);
+            user.markModified('favRestaurants');
+            user.save();
+        }
+
+        console.log('updated user : ' + user);
+        res.redirect(`/restaurant/${shopId}/detail`)
+    })
+    .catch((error) => {
+        res.send(error);
+    })
+
+
+    // User.findByIdAndUpdate(userId, dataInfo, {new: true}).then((updatedData) => {
+    //     console.log('updated data : ', updatedData);
+    //     res.redirect(`/restaurant/${shopId}/detail`)
+    // })
+})
 module.exports = router;

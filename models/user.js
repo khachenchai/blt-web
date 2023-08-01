@@ -34,6 +34,13 @@ const UserSchema = new Schema({
         }],
         require: false,
     },
+    favRestaurants: {
+        type: [{
+            type: Schema.Types.ObjectId, ref: 'Restaurant',
+            required: false
+        }],
+        require: false,
+    },
     orderHistory: {
         type: [{
             type: Schema.Types.ObjectId, ref: 'Order', required: false

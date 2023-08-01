@@ -4,9 +4,9 @@
         <div class="px-16 py-8">
             <a href="/profile" class="text-sky-500 hover:underline"><-- กลับ</a>
             <h1 class="text-xl font-bold lg:font-normal lg:text-5xl my-4">ข้อมูลร้านอาหาร</h1>
-            <div class="lg:flex  lg:justify-between lg:items-baseline">
-                <div>
-                    <div class="lg:p-4 ">
+            <div class="lg:flex lg:justify-between lg:items-baseline">
+                <div class="w-[80%]">
+                    <div class="lg:p-4">
                         <p class="lg:pt-4"><b>ชื่อร้าน :</b> <%= restaurantData.name %></p>
                         <p><b>เบอร์โทรศัพท์ :</b> <%= restaurantData.phoneNumber %></p>
                         <hr class="my-3">
@@ -14,10 +14,17 @@
                         <p><b>จองไปแล้ว :</b> <%= restaurantData.onHands %> ที่นั่ง</p>
                         <p><b>เหลือที่นั่ง :</b> <%= restaurantData.allSeats - restaurantData.onHands %> ที่นั่ง</p>
                         <hr class="my-3">
+                        <p class="text-lg"><b>รูปโลโก้ร้าน</b></p>
+                        <% if (restaurantData.imageUrl) { %>
+                            <img src="/uploads/<%= restaurantData.imageUrl %>" class="lg:w-1/3 my-2" alt="">
+                        <% } else { %>
+                            <p class="text-base text-slate-500">- ยังไม่มีการเพิ่มรูป</p>
+                        <% } %>
                     </div>
+                    
                 </div>
                 <div>
-                    <div class=" p-4">
+                    <div class="flex p-2">
                         <a href="/restaurant/<%= restaurantData._id %>/edit">
                             <div
                                 class="relative shadow-lg inline-flex items-center justify-center mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-orange-500 to-orange-700">
@@ -39,6 +46,7 @@
                     </div>
                 </div>
             </div>
+            
             <hr class="my-2">
             <h1 class="lg:text-4xl text-3xl pt-5 text-center">ออเดอร์จากลูกค้า</h1>
             <!-- <hr class="my-3"> -->

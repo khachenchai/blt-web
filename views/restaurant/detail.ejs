@@ -4,15 +4,32 @@
     <div class="px-16 py-8 mx-auto">
         <div class="lg:flex">
             <div class="lg:w-1/2">
-                <img src="/img/bunlaithong.png" class="object-contain lg:h-96 w-full" alt="">
+                <% if (restaurantData.imageUrl) { %>
+                    <img class="object-contain lg:h-96 w-full" src="/uploads/<%= restaurantData.imageUrl %>" alt="" />
+                <% } else { %>
+                    <img src="/img/placeholder.png" class="object-contain lg:h-96 w-full" alt="">
+                <% } %>
+                
             </div>
             <div class="lg:w-1/2 p-4">
-                <h1 class="lg:text-5xl font-bold lg:font-normal text-xl text-center lg:text-left my-3"><%= restaurantData.name %></h1>
+                <div class="flex items-baseline justify-between">
+                    <h1 class="lg:text-5xl font-bold lg:font-normal text-xl text-center lg:text-left my-3"><%= restaurantData.name %></h1>
+                    <div class="pr-4">
+                        <a href="/api/user/update/fav?shopId=<%= restaurantData._id %>&isFav=<%= userData.favRestaurants.includes(restaurantData._id) %>">
+                            <% if (userData.favRestaurants.includes(restaurantData._id)) { %>
+                                <img src="/img/filledHeart.png" class="w-8" alt="">
+                            <% } else { %>
+                                <img src="/img/heart.png" class="w-8" alt="">
+                            <% } %>
+                        </a>
+                    </div>
+                </div>
                 <p><b>เบอร์โทรศัพท์ :</b> <%= restaurantData.phoneNumber %></p>
                 <% if (restaurantData.ggMapsLink) { %>
                     <p><b>Google Maps :</b> <a href="<%= restaurantData.ggMapsLink %>" class="text-sky-500 hover:underline">ไปที่ Google Maps</a></p>
                 <% } %>
                 <p><b>ตำแหน่งร้านอาหาร :</b> <%= restaurantData.address %></p>
+                <p><b>เหลือจำนวนที่นั่ง :</b> <%= restaurantData.allSeats - restaurantData.onHands %>/<%= restaurantData.allSeats %> ที่นั่ง</p>
                 <hr class="my-3">
                 <p class="lg:indent-4 text-center lg:text-left"><%= restaurantData.detail === '' ? 'ไม่มีรายละเอียด' : restaurantData.detail %></p>
                 <hr class="my-3">
@@ -26,58 +43,38 @@
             </div>
         </div>
         <hr class="my-2">
-        <h1 class="lg:text-4xl text-3xl mt-5 text-center">ร้านอาหารที่น่าสนใจ</h1>
+        <h1 class="lg:text-4xl text-3xl mt-5 text-center">ร้านอาหารอื่น ๆ</h1>
         <div class="grid mt-6 mb-6 mx-8 space-y-4 lg:grid-cols-6">
-            <a href=""
-                class="max-w-[180px] bg-white border shop border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
-                <div class="object-cover relative">
-                    <img class="object-cover h-40 w-96" src="/img/pst.png" alt="" />
-                    <!-- <div class="absolute bottom-0 right-0 rounded-l-md px-2 bg-blue-500 opacity-95">
-                        <b class="text-white">
-                            <div class="flex flex-row items-baseline">
-                                <div class="flex-shrink pr-2"><i class="fa fa-solid fa-eye fa-fw fa-inverse"
-                                        style="color: white;"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-normal text-base">183</h3>
-                                </div>
-                            </div>
-                        </b>
-                    </div> -->
-                </div>
-                <div class="px-4 py-2">
-                    <p class="mb-1 text-lg font-normal text-black">Cafe PKW</p>
-                    <p class=" text-lg font-normal text-black">ดูรายละเอียด</p>
-                </div>
-            </a>
 
-        </div>
-        <hr class="my-2">
-        <h1 class="lg:text-4xl text-3xl mt-5 text-center">ร้านอาหารยอดนิยม</h1>
-        <div class="grid mt-6 mx-8 space-y-4 lg:grid-cols-6">
-            <a href=""
-                class="max-w-[180px] bg-white border shop border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
-                <div class="object-cover relative">
-                    <img class="object-cover h-40 w-96" src="/img/pst.png" alt="" />
-                    <!-- <div class="absolute bottom-0 right-0 rounded-l-md px-2 bg-blue-500 opacity-95">
-                        <b class="text-white">
-                            <div class="flex flex-row items-baseline">
-                                <div class="flex-shrink pr-2"><i class="fa fa-solid fa-eye fa-fw fa-inverse"
-                                        style="color: white;"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-normal text-base">183</h3>
-                                </div>
-                            </div>
-                        </b>
-                    </div> -->
+            <% 
+                let otherRestaurants = restaurants.filter(restaurant => !restaurant.equals(restaurantData._id));
+            %>
+            <% otherRestaurants.reverse().forEach(restaurant => { %>
+                <div
+                    class="max-w-[180px] overflow-hidden bg-white border shop border-gray-200 rounded-md shadow">
+                    <div class="object-cover relative">
+                        <% if (restaurant.imageUrl) { %>
+                            <img class="object-cover h-40 w-96" src="/uploads/<%= restaurant.imageUrl %>" alt="" />
+                        <% } else { %>
+                            <img class="object-cover h-40 w-96" src="/img/placeholder.png" alt="" />
+                        <% } %>
+                    </div>
+                    <div class="px-4 py-2">
+                        <p class="mb-1 text-lg font-bold text-black"><%= restaurant.name %></p>
+                        <p class="font-normal text-sm text-slate-500">เหลือที่นั่งว่างอยู่ : <%= restaurant.allSeats - restaurant.onHands %>/<%= restaurant.allSeats %> ที่นั่ง</p>
+                        <% if (userData) { %>
+                            <a <% if (userData.ownRestaurants.includes(restaurant._id)) { %>
+                                href="/restaurant/<%= restaurant._id %>/manage"
+                            <% } else { %>
+                                href="/restaurant/<%= restaurant._id %>/detail"
+                            <% } %>
+                                class="wow text-lg font-normal <%= userData.ownRestaurants.includes(restaurant._id) ? 'text-red-600' : 'text-yellow-700' %>"><%= userData.ownRestaurants.includes(restaurant._id) ? 'จัดการร้าน' : 'ดูรายละเอียด' %></a>
+                        <% } else { %>
+                            <a href="/restaurant/<%= restaurant._id %>/detail" class="wow text-lg font-normal text-yellow-700">ดูรายละเอียด</a>
+                        <% } %>
+                    </div>
                 </div>
-                <div class="px-4 py-2">
-                    <p class="mb-1 text-lg font-normal text-black">Cafe PKW</p>
-                    <p class=" text-lg font-normal text-black">ดูรายละเอียด</p>
-                </div>
-            </a>
-
+            <% }) %>
         </div>
     </div>
         <%- include('../../include/footer') %>

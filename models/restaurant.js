@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const bcrypt = require('bcrypt')
 
 const restaurantSchema = new Schema({
     name: {
@@ -34,7 +33,12 @@ const restaurantSchema = new Schema({
     orders: [{
         type: Schema.Types.ObjectId, ref: 'Order',
         required: false
-    }]
+    }],
+    imageUrl: {
+        type: String,
+        required: false,
+        default: ''
+    }
 })
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
