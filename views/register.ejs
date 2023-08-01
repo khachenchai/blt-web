@@ -1,9 +1,14 @@
 <%- include('../include/header') %>
 
-        <div class="h-[80vh]">
+        <div class="">
             <div class="container p-4 mx-auto mt-16 md:mt-10">
+                <% if (typeof messages !== 'undefined' && typeof messages.error !== 'undefined') { %>
+                    <div class="bg-red-200 mx-auto max-w-4xl p-4 rounded-md border-2 border-red-500 my-4">
+                        <p class="text-red-500 font-bold text-center"><%= messages.error %></p>
+                    </div>
+                <% } %>
                 <!-- component -->
-                <section class="max-w-4xl p-8 mt-2 mx-auto bg-slate-50 rounded-md shadow-lg  ">
+                <section class="max-w-4xl p-8 mt-2 mx-auto bg-slate-100 rounded-md shadow-xl  ">
                     <h1 class="text-xl font-bold pb-2 leading-tight underline tracking-tight text-gray-900 md:text-2xl">
                         ลงชื่อเข้าใช้บัญชีของคุณ</h1>
                     <form action="/api/user/register" method="POST">

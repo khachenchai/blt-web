@@ -89,10 +89,20 @@ router.post('/edit', upload, (req, res) => {
     })
 })
 
-router.delete('/delete', (req, res, next) => {
+router.get('/delete', async (req, res, next) => {
+
+    let restaurant = await Restaurant.findById(req.query.id)
+
+    restaurant.orders.forEach(order => {
+        Order.findByIdAndRemove(order._id).then((deletedOrder) => {
+            console.log('deleted : ' + deletedOrder);
+        })
+    })
+
     Restaurant.findByIdAndRemove(req.query.id)
         .exec()
         .then((deletedData) => {
+            console.log('deleted rest : ' + deletedData);
             res.redirect('/profile')
         })
         .catch((err) => {

@@ -183,6 +183,17 @@ router.get('/admin/panel', authMiddleware, async (req, res) => {
     });
 })
 
+router.get('/admin/editUser', authMiddleware, async (req, res) => {
+    let userData = await User.findById(req.session.userId);
+    let userToEdit = await User.findById(req.query.id);
+    let userToEditPassword = await User.findById(req.query.id).select('-password');
+    res.render('admin/editUser', {
+        userData,
+        user: userToEdit,
+        userToEditPassword
+    });
+})
+
 router.get('/admin/panel/users', authMiddleware, async (req, res) => {
     let userData = await User.findById(req.session.userId);
     const allUsers = await User.find().populate('ownRestaurants');
@@ -202,12 +213,21 @@ router.get('/admin/panel/restaurants', authMiddleware, async (req, res) => {
 })
 
 router.get('/admin/panel/orders', authMiddleware, async (req, res) => {
-    let userData = await User.findById(req.session.userId);
-    const allOrders = await Order.find();
-    res.render('admin/ordersPanel', {
-        userData,
-        orders: allOrders
-    });
-})
+    try {
+        let userData = await User.findById(req.session.userId);
+        const orders = await Order.find().populate('booker restaurant');
+
+        res.render('admin/ordersPanel', {
+            userData,
+            orders,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
 
 module.exports = router

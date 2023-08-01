@@ -26,7 +26,7 @@
                             </div>
                             <hr class="my-2">
                             <div class="py-2 mt-2">
-                                <a class=" bg-yellow-500 p-1 transition duration-200 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded text-sm text-black text-center md:mr-0" href="/admin/editUser">จัดการ</a>
+                                <a class=" bg-yellow-500 p-1 transition duration-200 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded text-sm text-black text-center md:mr-0" href="/admin/editUser?id=<%= user._id %>">จัดการ</a>
                                 <a class="text-white bg-red-500 p-1 transition duration-200 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm text-center md:mr-0" href="/api/user/delete?id=<%= user._id %>">ลบ</a>
                             </div>
                             
@@ -38,12 +38,3 @@
         </div>
     </div>
         <%- include('../../include/footer') %>
-
-<style>
-
-.wow:hover {
-    color: rgb(52, 123, 255);
-    transition: all 0.1s linear;
-}
-
-</style>

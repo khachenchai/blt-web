@@ -3,33 +3,33 @@ const router = express.Router();
 const User = require('../../models/user');
 const bcrypt = require('bcrypt');
 const Restaurant = require('../../models/restaurant');
+const Order = require('../../models/order');
 
-router.post('/register', (req, res) => {
-    User.create(req.body).then((user) => {
-        console.log('regist success : ' + user);
-        const { phoneNumber, password } = req.body
+router.post('/register', async (req, res) => {
+    const { phoneNumber, password } = req.body;
 
-        User.findOne({ phoneNumber: phoneNumber }).then((user) => {
-            // console.log('Logging successful');
+    try {
+        // Check if a user with the given phone number already exists
+        const existingUser = await User.findOne({ phoneNumber });
 
-            if (user) {
-                let cmp = bcrypt.compare(password, user.password).then((match) => {
-                    if (match) {
-                        req.session.userId = user._id
-                        res.redirect('/')
-                    } else {
-                        res.redirect('/login')
-                    }
-                })
-            } else {
-                res.redirect('/login')
-            }
-        })
-    })
-        .catch((err) => {
-            console.error(err);
-        })
+        if (existingUser) {
+            // Phone number already registered
+            req.flash('error', 'เบอร์โทรศัพท์ถูกใช้งานแล้ว');
+            return res.redirect('/register');
+        }
+
+        // Create a new user
+        const newUser = await User.create(req.body);
+
+        // Log in the newly registered user
+        req.session.userId = newUser._id;
+        res.redirect('/');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 });
+
 
 router.get('/', (req, res, next) => {
     User.find().exec()
@@ -109,13 +109,63 @@ router.get('/update/fav', async (req, res) => {
 router.get('/delete', (req, res) => {
     let id = req.query.id;
 
+    User.findById(id).then((user) => {
+        user.ownRestaurants.forEach(restaurant => {
+
+            // restaurant.orders.forEach(order => {
+            //     Order.findByIdAndRemove(order._id).then((deletedOrder) => {
+            //         console.log('deleted : ' + deletedOrder);
+            //     })
+            // })
+            
+            Restaurant.findByIdAndRemove(restaurant._id).then((deletedRestaurant) => {
+                console.log('deleted : ' + deletedRestaurant);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        });
+
+        user.orderHistory.forEach(order => {
+            Order.findByIdAndRemove(order._id).then((deletedOrder) => {
+                console.log('deleted : ' + deletedOrder);
+            })
+        })
+    });
+
     User.findByIdAndRemove(id)
     .exec()
         .then((deletedUser) => {
+            console.log('deleted : ' + deletedUser);
             res.redirect('/admin/panel/users')
         })
         .catch((err) => {
             next(err);
         });
 })
+
+router.post('/edit', async (req, res) => {
+    const id = req.query.id;
+
+    try {
+        // Check if the password is provided and not empty
+        if (req.body.password && req.body.password.trim().length > 0) {
+            // Hash the new password before saving it to the database
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            req.body.password = hashedPassword;
+        } else {
+            // If the password is not provided in the update, remove it from the req.body
+            delete req.body.password;
+        }
+
+        // Find the user by ID and update the fields
+        const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
+
+        console.log('updated: ', updatedUser);
+        res.redirect('/admin/panel/users');
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 module.exports = router;

@@ -37,6 +37,17 @@ router.post('/addOrder', (req, res) => {
     
 });
 
+router.get('/delete', (req, res) => {
+    let id = req.query.id;
+
+    Order.findByIdAndRemove(id).then(deletedOrder => {
+        console.log('Deleted order : ' + deletedOrder);
+        res.redirect('/admin/panel/orders');
+    }).catch(err => {
+        console.log(err);
+    })
+})
+
 
 router.get('/', (req, res, next) => {
     Order.find().exec()

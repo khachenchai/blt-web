@@ -1,138 +1,99 @@
-<%- include('../include/header') %>
+<%- include('../../include/header') %>
+    <%- include('../../include/navbar') %>
 
-        <div class="h-[80vh]">
-            <div class="container p-4 mx-auto mt-16 md:mt-10">
-                <!-- component -->
-                <section class="max-w-4xl p-8 mt-2 mx-auto bg-slate-50 rounded-md shadow-lg  ">
-                    <h1 class="text-xl font-bold pb-2 leading-tight underline tracking-tight text-gray-900 md:text-2xl">
-                        ลงชื่อเข้าใช้บัญชีของคุณ</h1>
-                    <form action="/api/user/register" method="POST">
-                        <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                            <div>
-                                <label class="dark:text-gray-200 font-bold" for="prefix">คำนำหน้าชื่อ</label>
-                                <select name="prefix"
-                                    class="block bg-gray-50 w-full px-2 py-2 mt-2 text-gray-700  border border-gray-300 rounded-md dark:bg-gray-800 focus:outline-none focus:ring">
-                                    <option disabled selected>-- โปรดเลือกคำนำหน้า --</option>
-                                    <option value="ด.ช.">ด.ช.</option>
-                                    <option value="ด.ญ.">ด.ญ.</option>
-                                    <option value="นาย">นาย</option>
-                                    <option value="นาง">นาง</option>
-                                    <option value="น.ส.">น.ส.</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="dark:text-gray-200 font-bold" for="firstname">ชื่อ</label>
-                                <input type="text" name="firstname" id="firstname" placeholder="สมชาย"
-                                    class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                            </div>
-
-                            <div>
-                                <label class="dark:text-gray-200 font-bold" for="lastname">นามสกุล</label>
-                                <input type="text" name="lastname" id="lastname" placeholder="ใจดี"
-                                    class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                            </div>
-
-                            <div>
-                                <label class="dark:text-gray-200 font-bold" for="phoneNumber">เบอร์โทรศัพท์</label>
-                                <input type="text" name="phoneNumber" id="phoneNumber"
-                                    placeholder="เบอร์โทรศัพท์"
-                                    class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                            </div>
-
-                            <div>
-                                <label class="block mb-2 text-sm font-bold text-gray-900"
-                                    for="password">รหัสผ่าน</label>
-                                <div class="relative w-full">
-                                    <div class="absolute inset-y-0 right-0 flex items-center px-2">
-                                        <a id="password-toggle">
-                                            <div class="flex-shrink hover:cursor-pointer pl-1 pr-2">
-                                                <i class="fa fa-solid fa-eye fa-fw fa-inverse" id="password-toggle-btn"
-                                                    style="color: #aaa;"></i>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <input type="password" name="password" id="password" placeholder="รหัสผ่าน"
-                                        class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        required>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block mb-2 text-sm font-bold text-gray-900"
-                                    for="check-password">ยืนยันรหัสผ่าน</label>
-                                <div class="relative w-full">
-                                    <div class="absolute inset-y-0 right-0 flex items-center px-2">
-                                        <a id="check-password-toggle">
-                                            <div class="flex-shrink hover:cursor-pointer pl-1 pr-2">
-                                                <i class="fa fa-solid fa-eye fa-fw fa-inverse"
-                                                    id="check-password-toggle-btn" style="color: #aaa;"></i>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <input type="password" name="check-password" id="check-password"
-                                        placeholder="ยืนยันรหัสผ่าน"
-                                        class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        required>
-                                </div>
-                            </div>
-
-                            <div>
-
-                                <div class="flex pl-2 items-center justify-between">
-                                    <!-- <div class="flex items-center">
-                                    <div class="flex items-center h-5">
-                                        <input id="remember" aria-describedby="remember" type="checkbox"
-                                            class="w-4 h-4 border border-black rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600"
-                                            >
-                                    </div>
-                                    <div class="ml-3 text-sm">
-                                        <label for="remember" class="text-black dark:text-gray-300">Remember me</label>
-                                    </div>
-                                </div> -->
-                                    <a href="/login"
-                                        class="text-sm font-medium text-yellow-500 hover:underline dark:text-primary-500">มีบัญชีแล้ว
-                                        ?</a>
-                                </div>
-                            </div>
+    <div class="<%= userData.isAdmin ? 'bg-[#1d222b]' : '' %>">
+        <div class="container p-4 mx-auto">
+            <!-- component -->
+            <section class="max-w-4xl p-8 mt-2 mx-auto bg-slate-50 rounded-md shadow-lg  ">
+                <h1 class="text-xl font-bold pb-2 leading-tight underline tracking-tight text-gray-900 md:text-2xl">
+                    แก้ไขข้อมูลบัญชี</h1>
+                <form action="/api/user/edit?id=<%= user._id %>" method="POST">
+                    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                        <div>
+                            <label class="font-bold" for="prefix">คำนำหน้าชื่อ</label>
+                            <select name="prefix" required class="block bg-gray-50 w-full px-2 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 focus:outline-none focus:ring">
+                                <option disabled selected>-- โปรดเลือกคำนำหน้า --</option>
+                                <option value="ด.ช." <% if (user.prefix === 'ด.ช.') { %>selected<% } %>>ด.ช.</option>
+                                <option value="ด.ญ." <% if (user.prefix === 'ด.ญ.') { %>selected<% } %>>ด.ญ.</option>
+                                <option value="นาย" <% if (user.prefix === 'นาย') { %>selected<% } %>>นาย</option>
+                                <option value="นาง" <% if (user.prefix === 'นาง') { %>selected<% } %>>นาง</option>
+                                <option value="น.ส." <% if (user.prefix === 'น.ส.') { %>selected<% } %>>น.ส.</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="dark:text-gray-200 font-bold" for="firstname">ชื่อ</label>
+                            <input type="text" name="firstname" id="firstname" placeholder="สมชาย" value="<%= user.firstname %>" required
+                                class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                         </div>
 
-
-                        <div class="flex justify-end mt-6">
-                            <button type="submit"
-                                class="w-full text-white shadow-md bg-yellow-500 transition duration-200 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-semibold rounded-lg text-md px-5 py-2.5 text-center text-lg">ลงชื่อเข้าใช้</button>
+                        <div>
+                            <label class="dark:text-gray-200 font-bold" for="lastname">นามสกุล</label>
+                            <input type="text" name="lastname" id="lastname" placeholder="ใจดี" value="<%= user.lastname %>" required
+                                class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                         </div>
-                    </form>
-                </section>
-            </div>
+
+                        <div>
+                            <label class="dark:text-gray-200 font-bold" for="phoneNumber">เบอร์โทรศัพท์</label>
+                            <input type="text" name="phoneNumber" id="phoneNumber"
+                                placeholder="เบอร์โทรศัพท์" value="<%= user.phoneNumber %>" required
+                                class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 text-sm font-bold text-gray-900"
+                                for="password">รหัสผ่าน</label>
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 right-0 flex items-center px-2">
+                                    <a id="password-toggle">
+                                        <div class="flex-shrink hover:cursor-pointer pl-1 pr-2">
+                                            <i class="fa fa-solid fa-eye fa-fw fa-inverse" id="password-toggle-btn"
+                                                style="color: #aaa;"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                <input type="password" name="password" id="password" placeholder="รหัสผ่าน" value="" required
+                                    class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    required>
+                            </div>
+                        </div>
+                        
+
+                        
+                    </div>
+
+
+                    <div class="flex justify-end mt-6">
+                        <button type="submit"
+                            class="w-full text-white shadow-md bg-yellow-500 transition duration-200 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-semibold rounded-lg text-md px-5 py-2.5 text-center text-lg">แก้ไขข้อมูล</button>
+                    </div>
+                </form>
+            </section>
         </div>
-        <%- include('../include/footer') %>
+    </div>
+        <%- include('../../include/footer') %>
 
-            <script>
+<style>
 
-                const passwordToggle = document.getElementById('password-toggle')
-                const passwordtoggleBtn = document.getElementById('password-toggle-btn')
-                const password = document.getElementById('password')
+.shop:hover p {
+    color: rgb(52, 123, 255);
+    transition: all 0.1s linear;
+}
 
-                const checkPasswordToggle = document.getElementById('check-password-toggle')
-                const checkPasswordtoggleBtn = document.getElementById('check-password-toggle-btn')
-                const checkPassword = document.getElementById('check-password')
+</style>
 
-                passwordToggle.addEventListener('click', () => {
-                    if (password.type === 'password') {
-                        password.type = 'text';
-                        passwordtoggleBtn.style.color = "rgb(161 98 7)"
-                    } else {
-                        password.type = 'password';
-                        passwordtoggleBtn.style.color = "#aaa"
-                    }
-                })
-                checkPasswordToggle.addEventListener('click', () => {
-                    if (checkPassword.type === 'password') {
-                        checkPassword.type = 'text';
-                        checkPasswordtoggleBtn.style.color = "rgb(161 98 7)"
-                    } else {
-                        checkPassword.type = 'password';
-                        checkPasswordtoggleBtn.style.color = "#aaa"
-                    }
-                })
+<script>
 
-            </script>
+    const passwordToggle = document.getElementById('password-toggle')
+    const passwordtoggleBtn = document.getElementById('password-toggle-btn')
+    const password = document.getElementById('password')
+    passwordToggle.addEventListener('click', () => {
+        if (password.type === 'password') {
+            password.type = 'text';
+            passwordtoggleBtn.style.color = "rgb(161 98 7)"
+        } else {
+            password.type = 'password';
+            passwordtoggleBtn.style.color = "#aaa"
+        }
+    })
+
+</script>
