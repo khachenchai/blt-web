@@ -1,7 +1,7 @@
 <%- include('../include/header') %>
     <%- include('../include/navbar') %>
 
-        <div class="px-16 py-8">
+        <div class="px-16 py-8 <%= userData.isAdmin ? 'text-white bg-[#1d222b]' : '' %>">
             <div class="w-full">
                 <div>
                     <div class="w-full p-4">
@@ -19,7 +19,7 @@
             </div>
             <hr class="my-2">
             <h1 class="lg:text-4xl text-3xl mt-5 pb-2">ประวัติการจองที่นั่ง</h1>
-            <h5 class="my-2 text-xl font-semibold tracking-tight text-black">ล่าสุด</h5>
+            <h5 class="my-2 text-xl font-semibold tracking-tight ">ล่าสุด</h5>
             <div class="grid lg:grid-cols-2 mt-6 mb-6 gap-4 mx-8">
                 <% if (historyData.orderHistory.length === 0) { %>
                     <h1 class="lg:text-4xl text-3xl mt-5 text-slate-400 text-center">ไม่มีประวัติการจอง</h1>
@@ -121,7 +121,7 @@
                     <% }) %>
                         <a href="/addRestaurant">
                             <div
-                                class="max-w-md h-full mx-auto rounded-lg bg-white transition duration-500 hover:bg-slate-200 border-2 border-sky-600 shadow-lg overflow-hidden md:max-w-2xl">
+                                class="max-w-md h-full mx-auto rounded-lg <%= userData.isAdmin ? 'bg-[#1d222b]' : 'bg-white' %> transition duration-500 hover:bg-slate-200 border-2 border-sky-600 shadow-lg overflow-hidden md:max-w-2xl">
                                 <div class="flex h-full justify-center items-center">
                                     <h1 class="text-8xl text-sky-600">+</h1>
                                 </div>

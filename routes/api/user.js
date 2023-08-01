@@ -52,8 +52,15 @@ router.post('/login', async (req, res) => {
 
             if (match) {
                 req.session.userId = user._id;
-                console.log('Login successful');
-                res.redirect('/');
+
+                if (user.isAdmin) {
+                    console.log('Admin login successful');
+                    res.redirect('/admin/index');
+                } else {
+                    console.log('Login successful');
+                    res.redirect('/');
+                }
+                
             } else {
                 req.flash('error', 'เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง');
                 res.redirect('/login');
@@ -93,10 +100,22 @@ router.get('/update/fav', async (req, res) => {
         res.send(error);
     })
 
-
     // User.findByIdAndUpdate(userId, dataInfo, {new: true}).then((updatedData) => {
     //     console.log('updated data : ', updatedData);
     //     res.redirect(`/restaurant/${shopId}/detail`)
     // })
+})
+
+router.get('/delete', (req, res) => {
+    let id = req.query.id;
+
+    User.findByIdAndRemove(id)
+    .exec()
+        .then((deletedUser) => {
+            res.redirect('/admin/panel/users')
+        })
+        .catch((err) => {
+            next(err);
+        });
 })
 module.exports = router;

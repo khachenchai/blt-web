@@ -119,7 +119,6 @@ router.put('/clear', async (req, res, next) => {
     }
 });
 
-
 router.get('/', (req, res, next) => {
     Restaurant.find().exec()
         .then((user) => {

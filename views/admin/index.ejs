@@ -1,0 +1,71 @@
+<%- include('../../include/header') %>
+    <%- include('../../include/navbar') %>
+
+    <div class="p-8 mx-auto h-full bg-[#1d222b] text-white">
+        <h1 class="text-4xl text-white">ร้านอาหารทั้งหมด (ล่าสุด)</h1>
+        <div class="grid mt-5 mb-2 mx-8 lg:grid-cols-6 space-y-4 lg:space-y-2">
+            <% restaurants.reverse().forEach(restaurant => { %>
+                <div
+                    class="max-w-[180px] overflow-hidden bg-[#201c34] border shop border-black rounded-md shadow-lg">
+                    <div class="object-cover relative">
+                        <% if (restaurant.imageUrl) { %>
+                            <img class="object-cover h-40 w-96" src="/uploads/<%= restaurant.imageUrl %>" alt="" />
+                        <% } else { %>
+                            <img class="object-cover h-40 w-96" src="/img/placeholder.png" alt="" />
+                        <% } %>
+                    </div>
+                    <div class="px-4 py-2">
+                        <p class="mb-1 <%= restaurant.name.length > 8 ? 'text-base' : 'text-lg'  %> font-normal "><%= restaurant.name %></p>
+                        <p class="font-normal text-sm text-slate-500">เหลือที่นั่งว่างอยู่ : <%= restaurant.allSeats - restaurant.onHands %>/<%= restaurant.allSeats %> ที่นั่ง</p>
+                        <% if (userData) { %>
+                            <a <% if (userData.ownRestaurants.includes(restaurant._id)) { %>
+                                href="/restaurant/<%= restaurant._id %>/manage"
+                            <% } else { %>
+                                href="/restaurant/<%= restaurant._id %>/detail"
+                            <% } %>
+                                class="hover:text-[#347bff] transition duration-200 text-base font-normal <%= userData.ownRestaurants.includes(restaurant._id) ? 'text-red-600' : 'text-yellow-700' %>"><%= userData.ownRestaurants.includes(restaurant._id) ? 'จัดการร้าน' : 'ดูรายละเอียด' %></a>
+                        <% } else { %>
+                            <a href="/restaurant/<%= restaurant._id %>/detail" class="hover:text-[#347bff] transition duration-200 text-base font-normal text-yellow-700">ดูรายละเอียด</a>
+                        <% } %>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <hr class="my-2">
+        <h1 class="text-4xl mt-5">ร้านอาหารที่คุณถูกใจ</h1>
+        <div class="grid mt-5 mx-8 lg:grid-cols-6 space-y-4 lg:space-y-2">
+            <% if (userData.favRestaurants) { %>
+                <% restaurants.reverse().forEach(restaurant => { %>
+                    <% if (userData.favRestaurants.includes(restaurant._id)) { %>
+                        <div
+                            class="max-w-[180px] overflow-hidden bg-white border shop border-gray-200 rounded-md shadow">
+                            <div class="object-cover relative">
+                                <% if (restaurant.imageUrl) { %>
+                                    <img class="object-cover h-40 w-96" src="/uploads/<%= restaurant.imageUrl %>" alt="" />
+                                <% } else { %>
+                                    <img class="object-cover h-40 w-96" src="/img/placeholder.png" alt="" />
+                                <% } %>
+                            </div>
+                            <div class="px-4 py-2">
+                                <p class="mb-1 text-lg font-bold text-black"><%= restaurant.name %></p>
+                                <p class="font-normal text-sm text-slate-500">เหลือที่นั่งว่างอยู่ : <%= restaurant.allSeats - restaurant.onHands %>/<%= restaurant.allSeats %> ที่นั่ง</p>
+                                <% if (userData) { %>
+                                    <a <% if (userData.ownRestaurants.includes(restaurant._id)) { %>
+                                        href="/restaurant/<%= restaurant._id %>/manage"
+                                    <% } else { %>
+                                        href="/restaurant/<%= restaurant._id %>/detail"
+                                    <% } %>
+                                        class="wow text-lg font-normal <%= userData.ownRestaurants.includes(restaurant._id) ? 'text-red-600' : 'text-yellow-700' %>"><%= userData.ownRestaurants.includes(restaurant._id) ? 'จัดการร้าน' : 'ดูรายละเอียด' %></a>
+                                <% } else { %>
+                                    <a href="/restaurant/<%= restaurant._id %>/detail" class="wow text-lg font-normal text-yellow-700">ดูรายละเอียด</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }) %>
+            <% } else { %>
+                <p class="text-slate-500">ยังไม่มีร้านโปรด</p>
+            <% } %>
+        </div>
+    </div>
+        <%- include('../../include/footer') %>

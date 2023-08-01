@@ -1,0 +1,47 @@
+<%- include('../../include/header') %>
+    <%- include('../../include/navbar') %>
+
+    <div class="p-8 min-h-screen mx-auto <%= userData.isAdmin ? 'bg-[#1d222b] text-white' : '' %>">
+        <h1 class="text-4xl">Admin Dashboard</h1>
+        <hr class="my-3">
+        <div class="mt-3 bg-white/10 p-6 rounded-lg">
+            <h4 class="font-bold text-2xl"><u>รายการทั้งหมด</u></h4>
+            <div class="pl-8">
+                <div class="mt-4 w-[60%] bg-[#201c34] p-4 rounded shadow">
+                    <h4 class="text-xl">ผู้ใช้ (Users)</h4>
+                    <hr class="my-2">
+                    <div class="py-2 ">
+                        <a class="text-white bg-emerald-500 p-1 transition duration-200 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm text-center md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" href="/admin/panel/users">จัดการ</a>
+                    </div>
+                </div>
+            </div>
+            <div class="pl-8">
+                <div class="mt-4 w-[60%] bg-[#201c34] p-4 rounded shadow">
+                    <h4 class="text-xl">ร้านอาหาร (Restaurants)</h4>
+                    <hr class="my-2">
+                    <div class="py-2 ">
+                        <a class="text-white bg-emerald-500 p-1 transition duration-200 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm text-center md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" href="/admin/panel/restaurants">จัดการ</a>
+                    </div>
+                </div>
+            </div>
+            <div class="pl-8">
+                <div class="mt-4 w-[60%] bg-[#201c34] p-4 rounded shadow">
+                    <h4 class="text-xl">รายการสั่ง (Orders)</h4>
+                    <hr class="my-2">
+                    <div class="py-2 ">
+                        <a class="text-white bg-emerald-500 p-1 transition duration-200 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm text-center md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" href="/admin/panel/orders">จัดการ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <%- include('../../include/footer') %>
+
+<style>
+
+.wow:hover {
+    color: rgb(52, 123, 255);
+    transition: all 0.1s linear;
+}
+
+</style>

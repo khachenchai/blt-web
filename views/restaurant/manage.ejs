@@ -1,7 +1,7 @@
 <%- include('../../include/header') %>
     <%- include('../../include/navbar') %>
 
-        <div class="px-16 py-8">
+        <div class="px-16 py-8 <%= userData.isAdmin ? 'text-white bg-[#1d222b]' : '' %>">
             <a href="/profile" class="text-sky-500 hover:underline"><-- กลับ</a>
             <h1 class="text-xl font-bold lg:font-normal lg:text-5xl my-4">ข้อมูลร้านอาหาร</h1>
             <div class="lg:flex lg:justify-between lg:items-baseline">
@@ -51,56 +51,58 @@
             <h1 class="lg:text-4xl text-3xl pt-5 text-center">ออเดอร์จากลูกค้า</h1>
             <!-- <hr class="my-3"> -->
         </div>
-        <div class="p-4 h-screen lg:mx-32">
-            <div class="flex-col space-y-4 mx-auto contanier">
-                <% if (restaurantData.orders.length > 0) { %>
-                    <% restaurantData.orders.reverse().forEach(order => { %>
-                        <div
-                            class="lg:flex lg:justify-between gap-4 items-center bg-slate-100 relative rounded-lg p-4 shadow-xl">
-                            <a href="/api/restaurant/clear?shopId=<%= restaurantData._id %>&orderId=<%= order._id %>" id="clearOrder" onclick="confirmDeletion(event, 'ข้อมูลออเดอร์นี้จะไม่สามารถกู้คืนได้ในภายหลัง')">
-                                <button
-                                class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-red-500 hover:bg-red-700 transition duration-200 text-white">X</button>
-                            </a>
-                            <div class="w-full p-2 flex items-center gap-8">
-                                <div>
-                                    <h1 class="lg:text-2xl text-base font-semibold">
-                                        <%= order.booker.prefix %><%= order.booker.firstname %> <%= order.booker.lastname %>
-                                    </h1>
-                                    <h1 class="lg:text-base text-sm text-black">
-                                        <% 
-                                            const time = new Date(order.orderDateTime).getTime();
-                                            const formattedDate = new Date(time).toLocaleString();
-
-                                            let myList = formattedDate.split(' ')
-
-                                            let finalFormattedDate = `${myList[0]} เวลา ${myList[1].substr(0, 5)} น.`;
-                                        %>
-                                        วันที่ <%= finalFormattedDate %>
-                                    </h1>
-                                    <h1 class="lg:text-base text-sm text-slate-500 indent-4 text-clip">
-                                        <%= order.detail %>
-                                    </h1>
+        <div class="<%= userData.isAdmin ? 'bg-[#1d222b]' : '' %>">
+            <div class="p-4 h-screen lg:mx-32">
+                <div class="flex-col space-y-4 mx-auto contanier">
+                    <% if (restaurantData.orders.length > 0) { %>
+                        <% restaurantData.orders.reverse().forEach(order => { %>
+                            <div
+                                class="lg:flex lg:justify-between gap-4 items-center bg-slate-100 relative rounded-lg p-4 shadow-xl">
+                                <a href="/api/restaurant/clear?shopId=<%= restaurantData._id %>&orderId=<%= order._id %>" id="clearOrder" onclick="confirmDeletion(event, 'ข้อมูลออเดอร์นี้จะไม่สามารถกู้คืนได้ในภายหลัง')">
+                                    <button
+                                    class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-red-500 hover:bg-red-700 transition duration-200 text-white">X</button>
+                                </a>
+                                <div class="w-full p-2 flex items-center gap-8">
+                                    <div>
+                                        <h1 class="lg:text-2xl text-base font-semibold">
+                                            <%= order.booker.prefix %><%= order.booker.firstname %> <%= order.booker.lastname %>
+                                        </h1>
+                                        <h1 class="lg:text-base text-sm text-black">
+                                            <% 
+                                                const time = new Date(order.orderDateTime).getTime();
+                                                const formattedDate = new Date(time).toLocaleString();
     
+                                                let myList = formattedDate.split(' ')
+    
+                                                let finalFormattedDate = `${myList[0]} เวลา ${myList[1].substr(0, 5)} น.`;
+                                            %>
+                                            วันที่ <%= finalFormattedDate %>
+                                        </h1>
+                                        <h1 class="lg:text-base text-sm text-slate-500 indent-4 text-clip">
+                                            <%= order.detail %>
+                                        </h1>
+        
+                                    </div>
+                                </div>
+                                <div class="mr-2 mt-3 lg:mt-0 gap-4 w-full flex text-center justify-end">
+                                    <div class="p-4">
+                                        <h1 class="text-4xl font-semibold">
+                                            <%= order.seatsAmount %>
+                                        </h1>
+                                        <h1 class="text-xl mt-2 font-semibold">
+                                            ที่นั่ง
+                                        </h1>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="mr-2 mt-3 lg:mt-0 gap-4 w-full flex text-center justify-end">
-                                <div class="p-4">
-                                    <h1 class="text-4xl font-semibold">
-                                        <%= order.seatsAmount %>
-                                    </h1>
-                                    <h1 class="text-xl mt-2 font-semibold">
-                                        ที่นั่ง
-                                    </h1>
-                                </div>
-                            </div>
-                        </div>
-                    <% }) %>
-                <% } else { %>
-                    <h1 class="lg:text-xl text-lg pt-5 text-slate-500 text-center">ยังไม่มีออเดอร์การจองจากลูกค้า</h1>
-                <% } %>
-
+                        <% }) %>
+                    <% } else { %>
+                        <h1 class="lg:text-xl text-lg pt-5 text-slate-500 text-center">ยังไม่มีออเดอร์การจองจากลูกค้า</h1>
+                    <% } %>
+    
+                </div>
+    
             </div>
-
         </div>
         <%- include('../../include/footer') %>
 

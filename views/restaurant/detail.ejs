@@ -1,7 +1,7 @@
 <%- include('../../include/header') %>
     <%- include('../../include/navbar') %>
 
-    <div class="px-16 py-8 mx-auto">
+    <div class="px-16 py-8 mx-auto <%= userData.isAdmin ? 'text-white bg-[#1d222b]' : '' %>">
         <div class="lg:flex">
             <div class="lg:w-1/2">
                 <% if (restaurantData.imageUrl) { %>
@@ -11,7 +11,7 @@
                 <% } %>
                 
             </div>
-            <div class="lg:w-1/2 p-4">
+            <div class="lg:w-1/2 p-4 <%= userData.isAdmin ? 'bg-white/10 rounded-md' : '' %>">
                 <div class="flex items-baseline justify-between">
                     <h1 class="lg:text-5xl font-bold lg:font-normal text-xl text-center lg:text-left my-3"><%= restaurantData.name %></h1>
                     <div class="pr-4">
@@ -34,11 +34,24 @@
                 <p class="lg:indent-4 text-center lg:text-left"><%= restaurantData.detail === '' ? 'ไม่มีรายละเอียด' : restaurantData.detail %></p>
                 <hr class="my-3">
                 <div class="flex justify-center mt-3">
-                    <div class="p-4 ">
-                        <a href="/restaurant/<%= restaurantData._id %>/orderInform"
-                            class="p-3 border hover:bg-red-500 rounded-lg border-red-500 lg:text-3xl text-base font-semibold text-red-500 hover:text-white transition-all duration-200">จองที่นั่งเลย
-                            !</a>
-                    </div>
+                    <% if (userData.isAdmin) { %>
+                        <div class="p-4 ">
+                            <a href="/restaurant/<%= restaurantData._id %>/orderInform"
+                                class="p-3 border hover:bg-red-500 rounded-lg border-red-500 lg:text-3xl text-base font-semibold text-red-500 hover:text-white transition-all duration-200">จองที่นั่งเลย
+                                !</a>
+                        </div>
+                        <div class="p-4 ">
+                            <a href="/restaurant/<%= restaurantData._id %>/manage"
+                                class="p-3 border hover:bg-orange-500 rounded-lg border-orange-500 lg:text-3xl text-base font-semibold text-orange-500 hover:text-white transition-all duration-200">จัดการร้าน
+                                !</a>
+                        </div>
+                    <% } else { %>
+                        <div class="p-4 ">
+                            <a href="/restaurant/<%= restaurantData._id %>/orderInform"
+                                class="p-3 border hover:bg-red-500 rounded-lg border-red-500 lg:text-3xl text-base font-semibold text-red-500 hover:text-white transition-all duration-200">จองที่นั่งเลย
+                                !</a>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -51,7 +64,7 @@
             %>
             <% otherRestaurants.reverse().forEach(restaurant => { %>
                 <div
-                    class="max-w-[180px] overflow-hidden bg-white border shop border-gray-200 rounded-md shadow">
+                    class="max-w-[180px] overflow-hidden <%= userData.isAdmin ? 'bg-[#201c34] border-black' : 'bg-white border-gray-200' %> border shop  rounded-md shadow">
                     <div class="object-cover relative">
                         <% if (restaurant.imageUrl) { %>
                             <img class="object-cover h-40 w-96" src="/uploads/<%= restaurant.imageUrl %>" alt="" />
@@ -60,7 +73,7 @@
                         <% } %>
                     </div>
                     <div class="px-4 py-2">
-                        <p class="mb-1 text-lg font-bold text-black"><%= restaurant.name %></p>
+                        <p class="mb-1 text-lg font-bold"><%= restaurant.name %></p>
                         <p class="font-normal text-sm text-slate-500">เหลือที่นั่งว่างอยู่ : <%= restaurant.allSeats - restaurant.onHands %>/<%= restaurant.allSeats %> ที่นั่ง</p>
                         <% if (userData) { %>
                             <a <% if (userData.ownRestaurants.includes(restaurant._id)) { %>

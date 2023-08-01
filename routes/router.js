@@ -5,17 +5,40 @@ const Restaurant = require('../models/restaurant')
 const Order = require('../models/order')
 const redirectIfAuth = require('../middleware/redirectIfAuth')
 const authMiddleware = require('../middleware/authMiddleware')
+const checkAdmin = require('../middleware/admin')
 
-router.get('/', authMiddleware , async (req, res) => {
+router.get('/', authMiddleware, async (req, res) => {
     let userData = await User.findById(req.session.userId);
     const allRestaurants = await Restaurant.find();
+    if (userData.isAdmin) {
+        res.redirect('/admin/index')
+    } else {
+        res.render('index', {
+            userData,
+            restaurants: allRestaurants
+        });
+    }
+})
 
-    // console.log(allRestaurants);
+router.get('/search', authMiddleware, async (req, res) => {
+    let q = req.query.q
+    const regex = new RegExp(q, 'i');
 
-    res.render('index', {
-        userData,
-        restaurants: allRestaurants
+    let userData = await User.findById(req.session.userId);
+    const allRestaurants = await Restaurant.find();
+    Restaurant.find({ name: regex }).then((results) => {
+        res.render('searchResult', {
+            userData,
+            restaurants: allRestaurants,
+            results,
+            q: q
+        })
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error searching items');
     });
+
 })
 
 router.get('/logout', (req, res) => {
@@ -44,7 +67,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
     });
 
     // console.log(historyData);
-    
+
     res.render('profile', {
         userData,
         historyData
@@ -62,7 +85,7 @@ router.get('/myOrders', authMiddleware, async (req, res) => {
     });
 
     // console.log(historyData);
-    
+
     res.render('myOrders', {
         userData,
         historyData
@@ -136,6 +159,54 @@ router.get('/restaurant/:id/manage', authMiddleware, async (req, res) => {
     res.render('restaurant/manage', {
         userData,
         restaurantData
+    });
+})
+
+
+// ADMIN
+
+router.get('/admin/index', authMiddleware, async (req, res) => {
+    let userData = await User.findById(req.session.userId);
+    const allRestaurants = await Restaurant.find();
+    res.render('admin/index', {
+        userData,
+        restaurants: allRestaurants
+    });
+})
+
+router.get('/admin/panel', authMiddleware, async (req, res) => {
+    let userData = await User.findById(req.session.userId);
+    const allRestaurants = await Restaurant.find();
+    res.render('admin/panel', {
+        userData,
+        restaurants: allRestaurants
+    });
+})
+
+router.get('/admin/panel/users', authMiddleware, async (req, res) => {
+    let userData = await User.findById(req.session.userId);
+    const allUsers = await User.find().populate('ownRestaurants');
+    res.render('admin/usersPanel', {
+        userData,
+        users: allUsers
+    });
+})
+
+router.get('/admin/panel/restaurants', authMiddleware, async (req, res) => {
+    let userData = await User.findById(req.session.userId);
+    const allRestaurants = await Restaurant.find();
+    res.render('admin/restaurantsPanel', {
+        userData,
+        restaurants: allRestaurants
+    });
+})
+
+router.get('/admin/panel/orders', authMiddleware, async (req, res) => {
+    let userData = await User.findById(req.session.userId);
+    const allOrders = await Order.find();
+    res.render('admin/ordersPanel', {
+        userData,
+        orders: allOrders
     });
 })
 
