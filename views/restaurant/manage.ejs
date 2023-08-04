@@ -2,7 +2,7 @@
     <%- include('../../include/navbar') %>
 
         <div class="px-16 py-8 <%= userData.isAdmin ? 'text-white bg-[#1d222b]' : '' %>">
-            <a href="/profile" class="text-sky-500 hover:underline"><-- กลับ</a>
+            <a href="/" class="text-sky-500 hover:underline"><-- กลับหน้าแรก</a>
             <h1 class="text-xl font-bold lg:font-normal lg:text-5xl my-4">ข้อมูลร้านอาหาร</h1>
             <div class="lg:flex lg:justify-between lg:items-baseline">
                 <div class="w-[80%]">
@@ -77,6 +77,9 @@
                                                 let finalFormattedDate = `${myList[0]} เวลา ${myList[1].substr(0, 5)} น.`;
                                             %>
                                             วันที่ <%= finalFormattedDate %>
+                                        </h1>
+                                        <h1 class="lg:text-base text-sm text-clip">
+                                            <b>เบอร์โทรศัพท์ :</b> <a href="tel:<%= order.booker.phoneNumber %>"><%= order.booker.phoneNumber %></a>
                                         </h1>
                                         <h1 class="lg:text-base text-sm text-slate-500 indent-4 text-clip">
                                             <%= order.detail %>

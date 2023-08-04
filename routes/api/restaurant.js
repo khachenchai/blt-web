@@ -59,19 +59,29 @@ router.post('/addRestaurant', upload, (req, res) => {
         })
 });
 
-router.post('/edit', upload, (req, res) => {
-    let newImage = "";
+router.post('/edit', upload, async (req, res) => {
+    let newImage = req.body.oldImage; // Initialize the newImage variable with the old image by default
 
     if (req.file) {
+        // If a new image is uploaded, update newImage with the new filename
         newImage = req.file.filename;
-        try {
-            fs.unlink(path.join(__dirname + "../../../public/uploads/") + req.body.oldImage);
-        } catch (err) {
-            console.log(err);
+
+        // Check if the old image exists
+        const oldImagePath = path.join(__dirname, "../../../public/uploads/", req.body.oldImage);
+        const oldImageExists = await fileExists(oldImagePath);
+
+        if (oldImageExists) {
+            // Delete the old image from the server's file system asynchronously with retry
+            try {
+                await attemptUnlink(oldImagePath);
+            } catch (err) {
+                console.error('Error while deleting old image:', err);
+            }
+        } else {
+            console.warn('Old image not found:', req.body.oldImage);
         }
-    } else {
-        newImage = req.body.oldImage;
     }
+
     const dataInfo = {
         name: req.body.name,
         phoneNumber: req.body.phoneNumber,
@@ -79,15 +89,50 @@ router.post('/edit', upload, (req, res) => {
         detail: req.body.detail,
         address: req.body.address,
         ggMapsLink: req.body.ggMaps,
-        onHands: 0,
-        orders: [],
-        imageUrl: newImage
-    }
-    Restaurant.findByIdAndUpdate(req.query.id, dataInfo, {new: true}).then((updatedData) => {
+        // Assuming onHands and orders should not be reset during the edit
+        imageUrl: newImage, // Assign the new image to the dataInfo
+    };
+
+    // Use the Mongoose update method to update the restaurant data
+    try {
+        const updatedData = await Restaurant.findByIdAndUpdate(req.query.id, dataInfo, { new: true });
+
         console.log('updated data : ', updatedData);
-        res.redirect(`/restaurant/${req.query.id}/manage`)
-    })
-})
+        res.redirect(`/restaurant/${req.query.id}/manage`);
+    } catch (error) {
+        console.error('Error updating data:', error);
+        // Handle the error and redirect or render an error page as needed
+        res.status(500).send('Error updating data.');
+    }
+});
+
+// Function to check if a file exists
+async function fileExists(filePath) {
+    try {
+        await fs.access(filePath);
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
+// Function to attempt unlink with retry
+async function attemptUnlink(filePath, attempts = 3, delayMs = 1000) {
+    for (let i = 0; i < attempts; i++) {
+        try {
+            await fs.unlink(filePath);
+            return; // Exit the function on successful unlink
+        } catch (err) {
+            if (err.code === 'ENOENT') {
+                console.warn('File does not exist:', filePath);
+                return; // Exit the function if the file doesn't exist (already deleted or not found)
+            }
+            console.error('Attempt ' + (i + 1) + ' failed:', err);
+            await new Promise(resolve => setTimeout(resolve, delayMs)); // Wait before retrying
+        }
+    }
+    throw new Error('Failed to unlink file after multiple attempts.');
+}
 
 router.get('/delete', async (req, res, next) => {
 

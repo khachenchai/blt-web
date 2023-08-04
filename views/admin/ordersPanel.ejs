@@ -9,7 +9,7 @@
             <div class="pl-8">
                 <% orders.forEach(order => { %>
                     <div class="mt-4 w-[80%] bg-[#201c34] p-4 rounded shadow">
-                        <h4 class="text-xl"><%= order.restaurant.name %></h4>
+                        <h4 class="text-xl"><%= order.restaurant ? `${order.restaurant.name}` : '--Unknown Restaurant--' %></h4>
                         <hr class="my-2">
                         <h4 class="text-lg underline">ข้อมูล</h4>
                         <div class="pl-4 mt-2">

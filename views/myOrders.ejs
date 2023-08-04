@@ -8,7 +8,7 @@
                 <div
                     class="max-w-full overflow-hidden <%= userData.isAdmin ? 'bg-[#201c34] border-black' : 'bg-white border-gray-200' %> border rounded-md shadow">
                     <div class="object-cover relative">
-                        <img class="object-cover h-40 w-96" src="/img/pst.png" alt="" />
+                        <img class="object-cover h-40 w-96" src="/uploads/<%= order.restaurant.imageUrl %>" alt="" />
                     </div>
                     <div class="px-4 py-2">
                         <p class="mb-1 text-lg font-bold"><%= order.restaurant.name %></p>
