@@ -34,7 +34,7 @@
         <hr class="my-2">
         <h1 class="text-4xl mt-5">ร้านอาหารที่คุณถูกใจ</h1>
         <div class="grid mt-5 mx-8 lg:grid-cols-6 space-y-4 lg:space-y-2">
-            <% if (userData.favRestaurants) { %>
+            <% if (userData.favRestaurants.length > 0) { %>
                 <% restaurants.reverse().forEach(restaurant => { %>
                     <% if (userData.favRestaurants.includes(restaurant._id)) { %>
                         <div
@@ -64,7 +64,7 @@
                     <% } %>
                 <% }) %>
             <% } else { %>
-                <p class="text-slate-500">ยังไม่มีร้านโปรด</p>
+                <p class="text-slate-500 text-xl">คุณยังไม่มีร้านโปรด</p>
             <% } %>
         </div>
     </div>

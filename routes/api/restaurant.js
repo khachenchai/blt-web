@@ -135,7 +135,7 @@ async function attemptUnlink(filePath, attempts = 3, delayMs = 1000) {
 }
 
 router.get('/delete', async (req, res, next) => {
-
+    let userData = await User.findById(req.session.userId);
     let restaurant = await Restaurant.findById(req.query.id)
 
     restaurant.orders.forEach(order => {
@@ -144,11 +144,17 @@ router.get('/delete', async (req, res, next) => {
         })
     })
 
+    // console.log(userData['isAdmin']);
+
     Restaurant.findByIdAndRemove(req.query.id)
         .exec()
         .then((deletedData) => {
             console.log('deleted rest : ' + deletedData);
-            res.redirect('/profile')
+            if (userData['isAdmin']) {
+                res.redirect('/admin/panel/restaurants')
+            } else {
+                res.redirect('/profile')
+            }
         })
         .catch((err) => {
             next(err);

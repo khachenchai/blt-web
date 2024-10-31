@@ -37,15 +37,39 @@ router.post('/addOrder', (req, res) => {
     
 });
 
-router.get('/delete', (req, res) => {
+router.get('/delete', async (req, res) => {
     let id = req.query.id;
 
-    Order.findByIdAndRemove(id).then(deletedOrder => {
-        console.log('Deleted order : ' + deletedOrder);
-        res.redirect('/admin/panel/orders');
-    }).catch(err => {
-        console.log(err);
-    })
+    let orderData = await Order.findById(id);
+
+    let restaurantData = await Restaurant.findById(orderData.restaurant);
+
+    
+
+    // console.log(restaurantData);
+
+    if (!restaurantData) {
+        Order.findByIdAndRemove(id).then(deletedOrder => {
+            console.log('Deleted order : ' + deletedOrder);
+            res.redirect('/admin/panel/orders');
+        }).catch(err => {
+            console.log(err);
+        })
+    } else {
+        restaurantData['onHands'] = restaurantData['onHands'] - orderData['seatsAmount']
+
+        console.log('updated restaurant : ' + restaurantData);
+        Order.findByIdAndRemove(id).then(deletedOrder => {
+            console.log('Deleted order : ' + deletedOrder);
+            res.redirect('/admin/panel/orders');
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
+    
+
+    
 })
 
 

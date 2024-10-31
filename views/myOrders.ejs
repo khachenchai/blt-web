@@ -2,7 +2,7 @@
     <%- include('../include/navbar') %>
 
     <div class="p-8 mx-auto <%= userData.isAdmin ? 'bg-[#1d222b] text-white' : '' %>">
-        <h1 class="text-4xl">ร้านอาหารทั้งหมด (ล่าสุด)</h1>
+        <h1 class="text-4xl">การจองของคุณ</h1>
         <div class="grid mt-5 mx-8 gap-4 lg:grid-cols-5 space-y-4 lg:space-y-2">
             <% historyData.orderHistory.reverse().forEach(order => { %>
                 <div

@@ -106,33 +106,51 @@ router.get('/update/fav', async (req, res) => {
     // })
 })
 
-router.get('/delete', (req, res) => {
+router.get('/delete', async (req, res) => {
     let id = req.query.id;
 
-    User.findById(id).then((user) => {
-        user.ownRestaurants.forEach(restaurant => {
+    await User.findById(id).then((user) => {
+        if (user.ownRestaurants || user.ownRestaurants.length > 0) {
+            user.ownRestaurants.forEach(restaurant => {
 
-            // restaurant.orders.forEach(order => {
-            //     Order.findByIdAndRemove(order._id).then((deletedOrder) => {
-            //         console.log('deleted : ' + deletedOrder);
-            //     })
-            // })
-            
-            Restaurant.findByIdAndRemove(restaurant._id).then((deletedRestaurant) => {
-                console.log('deleted : ' + deletedRestaurant);
-            })
-            .catch(err => {
-                console.log(err);
+                // restaurant.orders.forEach(order => {
+                //     Order.findByIdAndRemove(order._id).then((deletedOrder) => {
+                //         console.log('deleted : ' + deletedOrder);
+                //     })
+                // })
+                
+                Restaurant.findByIdAndRemove(restaurant._id).then((deletedRestaurant) => {
+                    console.log('deleted : ' + deletedRestaurant);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
             });
-        });
+        } else {
+            user.orderHistory.forEach(order => {
+                Order.findByIdAndRemove(order._id).then((deletedOrder) => {
+                    console.log('deleted : ' + deletedOrder);
+                })
+            });
+            User.findByIdAndRemove(id)
+            .exec()
+                .then((deletedUser) => {
+                    console.log('deleted : ' + deletedUser);
+                    res.redirect('/admin/panel/users')
+                })
+                .catch((err) => {
+                    next(err);
+                });
+        }
 
         user.orderHistory.forEach(order => {
             Order.findByIdAndRemove(order._id).then((deletedOrder) => {
                 console.log('deleted : ' + deletedOrder);
             })
-        })
+        });
     });
 
+    
     User.findByIdAndRemove(id)
     .exec()
         .then((deletedUser) => {
